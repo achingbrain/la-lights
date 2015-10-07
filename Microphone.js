@@ -2,7 +2,7 @@ var Mcp3008 = require('mcp3008.js')
 var adc = new Mcp3008()
 var channel = 0
 var map = require('map-range')(function (x) { return x }, 0, 768, 0.2, 1)
-var Barcli = require("barcli");
+/*var Barcli = require("barcli");
 
 var graph = {
   value: new Barcli({
@@ -18,7 +18,7 @@ var graph = {
     range: [0, 1]
   })
 }
-
+*/
 var Microphone = function () {
   this._adc = new Mcp3008()
   this._channel = 0
@@ -51,15 +51,15 @@ Microphone.prototype._listen = function () {
 
   var read = function() {
     adc.read(channel, function (value) {
-      graph.value.update(value)
-      graph.gain.update(this._gain)
+//      graph.value.update(value)
+//      graph.gain.update(this._gain)
 
       value *= this._gain
       value = Math.min(value, 1023)
 
       this.level = map(value)
 
-      graph.level.update(this.level)
+//      graph.level.update(this.level)
 
       this._immediate = setImmediate(read)
     }.bind(this))

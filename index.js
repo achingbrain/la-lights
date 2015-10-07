@@ -2,6 +2,7 @@ var strip = require('rpi-ws281x-native')
 var Sign = require('./Sign')
 var Microphone = require('./Microphone')
 var Hapi = require('hapi')
+var child_process = require('child_process')
 
 var mic = new Microphone()
 var sign = new Sign(mic)
@@ -75,6 +76,24 @@ server.route({
   handler: function (request, reply) {
     sign.brightness(request.payload.value)
     reply(200)
+  }
+})
+server.route({
+  method: 'POST',
+  path:'/api/system/reboot',
+  handler: function (request, reply) {
+    child_process.exec('/sbin/reboot', function() {
+      reply(200)
+    })
+  }
+})
+server.route({
+  method: 'POST',
+  path:'/api/system/shutdown',
+  handler: function (request, reply) {
+    child_process.exec('/sbin/init 0', function() {
+      reply(200)
+    })
   }
 })
 server.route({
